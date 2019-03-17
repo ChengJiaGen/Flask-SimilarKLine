@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Proudly presented by ECharts</title>
+
+    <!--<link href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+
+    <link href="static/jquery.searchableSelect.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" type="text/css" href="static/normalize.css">
+
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+
+    <link rel="stylesheet" type="text/css" href="static/number-pb.css">
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600&subset=latin,latin-ext' rel='stylesheet'>
+
+
+
+<style type="text/css">
+    .loading{
+        width:800px;
+        height:60px;
+        position: absolute;
+        left: 150px;
+        line-height:60px;
+        color:#fff;
+        padding-left:60px;
+        font-size:15px;
+        background: #000 url("../static/loader.gif") no-repeat 10px 50%;
+        opacity: 0.7;
+        z-index:9999;
+        -moz-border-radius:20px;
+        -webkit-border-radius:20px;
+        border-radius:20px;
+        filter:progid:DXImageTransform.Microsoft.Alpha(opacity=70);
+
+    }
+
+    .div_form{
+        width: 800px;
+        height: 60px;
+        padding-top: 10px;
+        padding-left: 20px;
+        margin-left: 150px;
+        margin-right: auto;
+        position: absolute;
+
+    }
+    #first_div{
+        margin: 80px 190px  190px;height: 700px;
+        position: relative;
+
+    }
+
+</style>
+
+
+    {% for jsfile_name in script_list %}
+        <script src="{{ host }}/{{ jsfile_name }}.js"></script>
+    {% endfor %}
+
+</head>
+
+<body style="text-align: center">
+    <div id = "first_div">
+        <div class="div_form">
+          <form id="msg">
+            <div style="position:absolute;z-index: 20;">
+                <select  class="select" id="select-msg1">
+                    <option value="">请选择一支股票 </option>
+                    {% for ts_code in ts_code_list %}
+                        <option value="{{ts_code[0]}}">{{ts_code[0]}}({{ts_code[1]}})</option>
+                    {% endfor %}
+                </select>
+
+                <select class="select" id="select-msg3">
+                    <option value=""> 请选择查找的天数 </option>
+                    <option value="30"> 近30天 </option>
+                    <option value="45"> 近45天 </option>
+                    <option value="60"> 近60天 </option>
+                </select>
+
+                <select class="select"  id="select-msg4">
+                    <option value=""> 请选择显示结果的数量 </option>
+                    <option value="1"> 1 </option>
+                    <option value="5"> 5 </option>
+                    <option value="10"> 10 </option>
+                </select>
+
+                <button type="button" class="btn btn-default" id="btn-add" style="margin: 0 0 0 30px;">开始查询</button>
+
+            </div>
+
+          </form>
+        </div>
+
+
+        <div class="loading" style="display: none" id="loading">
+            正在查询,请稍后。。。
+        </div>
+
+        <div class="number-pb" style="display: none">
+          <div class="number-pb-shown"></div>
+          <div class="number-pb-num">0%</div>
+        </div>
+
+        <div id="kline-charts" style="margin: 100px 25px 0 50px; height: 600px; position:absolute; z-index: 0;">
+            <h1 style="margin-top: 100px ;margin-left: 350px"> 请选择好相关选项，点击查询！</h1>
+        </div>
+
+    </div>
+
+
+<script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+
+<script src="https://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
+
+<script src="https://cdn.bootcss.com/bootstrap-select/1.13.2/js/i18n/defaults-zh_CN.min.js"></script>
+
+<script src="static/jquery.searchableSelect.js"></script>
+
+<script src="static/jquery.velocity.min.js"></script>
+
+<script src="static/number-pb.js"></script>
+
+
+
+<script type="text/javascript">
+
+    $(function(){
+			$('.select').searchableSelect();
+		});
+
+
+    //定义进度条的相关选项
+    let bars = $('.number-pb').NumberProgressBar({
+        duration:100,
+
+    });
+
+    //定义GUID
+    function guid() {
+    function S4() {
+        return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+    }
+        return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+    }
+
+
+    $("#btn-add").click(function () {
+        let form_data = new FormData();
+        let option1 = $("#select-msg1 option:selected").val();
+        let option2 = $("#select-msg3 option:selected").val();
+        let option3 = $("#select-msg4 option:selected").val();
+
+
+        let progress_num = 0;
+        if(option1 == "" || option2=="" || option3 ==""){
+            alert("请选择好相关选项！");
+        }
+        else {
+        let uuid = guid();
+        //console.log(uuid);
+        form_data.append("uuid",uuid);
+        form_data.append("ts_name", option1);
+        form_data.append("inquire_days", option2);
+        form_data.append("result_num", option3);
+
+        let sitv = setInterval(function(){
+            let progress_url = '{{ url_for("show_progress",uuid=uuid) }}' + uuid;
+            //console.log(progress_url);
+            $.getJSON(progress_url, function(res){
+                progress_num = res["num"];
+                bars.reach(progress_num);
+                // $('#prog_in').width(res + '%');
+                });
+        }, 100);
+
+        $.ajax({
+                url:'{{ url_for("add_charts") }}',
+                //async: false,
+                cache: false,
+                type: 'POST',
+                data: form_data,
+                dataType:"json",
+                processData: false,
+                contentType: false,
+
+                beforeSend:function(){
+
+                    $("#loading").css("display","block");
+                    $(".number-pb").css("display","block");
+                    $("#btn-add").attr("disabled","disabled");
+                    sitv;
+                    },
+
+                success:function (result) {
+                    if (result["status"] == "error"){
+                        if (result["status_code"] == 1001){
+                            clearInterval(sitv);
+                            $(".number-pb").css("display","none");
+                            alert("该支股票暂无数据");
+                        }
+                        else if (result["status_code"] == 1002){
+                            clearInterval(sitv);
+                            $(".number-pb").css("display","none");
+                            alert("该支股票数量较少，请重新选择")
+                            }
+                        else if (result["status_code"] == 1003){
+                            clearInterval(sitv);
+                            $(".number-pb").css("display","none");
+                            alert("请输入正确的信息")
+                            }
+                        }
+                    else {
+                        if (result["status_code"] == 2001){
+                            clearInterval(sitv);
+                            $("#kline-charts").html(result["result"]);
+                            }
+                         }
+                    },
+
+                complete:function(XHR, TS){
+                    clearInterval(sitv);
+                    $("#loading").css("display","none");
+                    $(".number-pb").css("display","none");
+                    $("#btn-add").removeAttr("disabled");
+
+
+                    },
+                error:function (e) {
+                    clearInterval(sitv);
+                    $(".number-pb").css("display","none");
+                    alert("请求错误");
+
+                    },
+            })
+        }
+    })
+
+</script>
+
+</body>
+
+</html>
+
+

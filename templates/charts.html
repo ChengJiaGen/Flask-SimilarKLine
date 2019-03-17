@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+
+
+     <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+
+    {% for jsfile_name in script_list %}
+        <script src="{{ host }}/{{ jsfile_name }}.js"></script>
+    {% endfor %}
+</head>
+<body>
+    <div style="margin: 0 50px 0 50px;padding-top: 50px;padding-left: 80px;" >
+        {{ myechart|safe }}
+    </div>
+
+</body>
+</html>
