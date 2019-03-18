@@ -1,6 +1,6 @@
 # Flask-SimilarKLine
 
-## index.py(https://github.com/ChengJiaGen/Flask-SimilarKLine/blob/master/index.py)
+## [index.py](https://github.com/ChengJiaGen/Flask-SimilarKLine/blob/master/index.py)
 - **`query_page()`**:
   + 查询页面视图函数
   
@@ -19,23 +19,23 @@
 - **`form_validation()`**：
   + 对接收的表单进行验证
   
-## Similarkviolent.py(https://github.com/ChengJiaGen/Flask-SimilarKLine/blob/master/Similarkviolent.py)
+## [Similarkviolent.py](https://github.com/ChengJiaGen/Flask-SimilarKLine/blob/master/Similarkviolent.py)
   使用动态规划优化的基于皮尔逊系数寻找相似股票走势
   
-## ReadData.py（https://github.com/ChengJiaGen/Flask-SimilarKLine/blob/master/ReadData.py）
+## [ReadData.py](https://github.com/ChengJiaGen/Flask-SimilarKLine/blob/master/ReadData.py)
   查询数据库相关操作
   
-## config.py(https://github.com/ChengJiaGen/Flask-SimilarKLine/blob/master/config.py)
+## [config.py](https://github.com/ChengJiaGen/Flask-SimilarKLine/blob/master/config.py)
   数据库配置文件
   
 ## 页面显示结果
 - 下图为查询页面：
-<div align=center><img src="https://github.com/ChengJiaGen/Flask-SimilarKLine/blob/master/result_img/start_page.png" width="700" height="350"/></div>
-<div align=center><img src="https://github.com/ChengJiaGen/Flask-SimilarKLine/blob/master/result_img/select-page.png" width="700" height="350"/></div>
+<div align=center><img src="https://github.com/ChengJiaGen/Flask-SimilarKLine/blob/master/result_img/start_page.png" width="600" height="400"/></div>
+<div align=center><img src="https://github.com/ChengJiaGen/Flask-SimilarKLine/blob/master/result_img/select-page.png" width="600" height="400"/></div>
 - 下图为查询过程中页面
-  <div align=center><img src="https://github.com/ChengJiaGen/Flask-SimilarKLine/blob/master/result_img/proress-page.png" width="700" height="350"/></div>
+  <div align=center><img src="https://github.com/ChengJiaGen/Flask-SimilarKLine/blob/master/result_img/proress-page.png" width="600" height="400"/></div>
 - 下图为查询结果显示页面
- <div align=center><img src="https://github.com/ChengJiaGen/Flask-SimilarKLine/blob/master/result_img/result-page.png" width="700" height="350"/></div>
+ <div align=center><img src="https://github.com/ChengJiaGen/Flask-SimilarKLine/blob/master/result_img/result-page.png" width="600" height="400"/></div>
 
 
   
