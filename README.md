@@ -37,7 +37,7 @@
   <div align=center><img src="https://github.com/ChengJiaGen/Flask-SimilarKLine/blob/master/result_img/proress-page.png" width="600" height="400"/></div>
   
 - 下图为查询结果显示页面
- <div align=center><img src="https://github.com/ChengJiaGen/Flask-SimilarKLine/blob/master/result_img/result-page.png" width="600" height="400"/></div>
+ <div align=center><img src="https://github.com/ChengJiaGen/Flask-SimilarKLine/blob/master/result_img/result-page.png" width="600" height="600"/></div>
 
 
   
